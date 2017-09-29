@@ -38,15 +38,26 @@ module Packet
       end
 
       def delete_device(device_or_id)
-        id = if device_or_id.is_a?(Packet::Device)
-               device_or_id.id
-             else
-               device_or_id
-             end
+        id = extract_id(device_or_id)
+
         delete("devices/#{id}")
       end
 
+      def get_bandwidth(device_or_id, from:, to:)
+        id = extract_id(device_or_id)
+
+        get("devices/#{id}/bandwidth", from: from, to: to)
+      end
+
       private
+
+      def extract_id(device_or_id)
+        if device_or_id.is_a?(Packet::Device)
+          device_or_id.id
+        else
+          device_or_id
+        end
+      end
 
       def action(device, action_type)
         post("devices/#{device.id}/actions", type: action_type).success?
