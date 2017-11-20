@@ -49,6 +49,19 @@ module Packet
         get("devices/#{id}/bandwidth", from: from, to: to)
       end
 
+      def traffic(device_or_id, bucket: 'external', direction: 'outbound', started_at:, ended_at:, interval:)
+        id = extract_id(device_or_id)
+
+        get("devices/#{id}/traffic",
+            bucket: bucket,
+            direction: direction,
+            interval: interval,
+            started_at: started_at,
+            ended_at: ended_at
+           )
+            
+      end
+
       private
 
       def extract_id(device_or_id)
